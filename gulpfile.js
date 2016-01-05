@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
 var browserify = require('browserify');
+var babelify = require('babelify');
 var watchify = require('watchify');
 var reactify = require('reactify');
 var gulpif = require('gulp-if');
@@ -28,7 +29,7 @@ var browserifyTask = function (options) {
   // Our app bundler
 	var appBundler = browserify({
 		entries: [options.src], // Only need initial file, browserify finds the rest
-   	transform: [reactify], // We want to convert JSX to normal javascript
+        transform: [reactify, [babelify, {presets: ["es2015"]}]], // We want to convert JSX to normal javascript, and es6 to es2015
 		debug: options.development, // Gives us sourcemapping
 		cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
 	});
